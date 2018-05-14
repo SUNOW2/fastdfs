@@ -23,8 +23,11 @@ public class FastdfsOperation {
     @Autowired
     private FastdfsFile fastdfsFile;
 
-    @Value("${fastdfs.uploadFileUri}")
-    private String uploadFileUri;
+    @Value("${fastdfs.uploadSmallFileUri}")
+    private String uploadSmallFileUri;
+
+    @Value("${fastdfs.uploadBigFileUri}")
+    private String uploadBigFileUri;
 
     /**
      * 上传文件至Fastdfs文件服务器
@@ -78,15 +81,16 @@ public class FastdfsOperation {
 
         //  新增数据库文件记录
         fastdfsFile.setFileParts(fileParts);
+        fastdfsFile.setId(fastdfsMapper.createId());
         fastdfsMapper.addFile(fastdfsFile);
         String[] filePart = fileParts.split(";");
 
         if (file.length() <= num) {
-            uri = uploadFileUri + filePart[1].replace("[", "")
+            uri = uploadSmallFileUri + filePart[1].replace("[", "")
                     .replace("]", "").replace(" ", "")
                     .replace(",", "/") + "?attname=" + requestParser.getOriginalFilename();
         }
-        uri = "http://192.168.1.112:8888/fastdfs/applicationToFile?id=" + fastdfsFile.getId();
+        uri = uploadBigFileUri + fastdfsFile.getId();
         // 上传成功，删除应用服务器文件
         DirectoryOperation.deleteDirectoryOperation(new File(uploadDir + "/" + requestParser.getUuid()));
         return uri;

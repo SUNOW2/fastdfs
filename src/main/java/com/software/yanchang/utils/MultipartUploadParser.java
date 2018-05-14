@@ -9,7 +9,7 @@ import org.apache.commons.io.FileCleaningTracker;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
+
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +33,7 @@ public class MultipartUploadParser {
     private DiskFileItemFactory fileItemsFactory;
 
     public MultipartUploadParser(HttpServletRequest request, File repository, ServletContext context) throws Exception {
+
         if (!repository.exists() && !repository.mkdirs()) {
             throw new IOException("Unable to mkdirs to " + repository.getAbsolutePath());
         }
@@ -44,7 +45,7 @@ public class MultipartUploadParser {
         ServletFileUpload upload = new ServletFileUpload(fileItemsFactory);
         List<FileItem> formFileItems = upload.parseRequest(request);
 
-        System.out.println("formFieldItems=" + formFileItems);
+//        System.out.println("formFieldItems=" + formFileItems);
         parseFormFields(formFileItems);
 
         if (files.isEmpty()) {

@@ -140,7 +140,7 @@ public class StorageServiceImpl implements StorageService {
      * @throws IOException
      * @throws MyException
      */
-    public void applicationToFile(Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException, MyException {
+    public void applicationToFile(String id, HttpServletRequest request, HttpServletResponse response) throws IOException, MyException {
         String fileparts = fastdfsMapper.getFileParts(id).getFileParts();
         String[] parts = fileparts.split(";");
         String fileTmpPath = finalDirPath + parts[0];

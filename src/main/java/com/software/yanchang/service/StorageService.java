@@ -23,7 +23,7 @@ public interface StorageService {
      * @param id
      * @return
      */
-    void applicationToFile(Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException, MyException;
+    void applicationToFile(String id, HttpServletRequest request, HttpServletResponse response) throws IOException, MyException;
 
     /**
      * 删除数据库中的记录

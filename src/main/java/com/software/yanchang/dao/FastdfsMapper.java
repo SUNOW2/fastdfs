@@ -11,7 +11,7 @@ public interface FastdfsMapper {
      * @param id
      * @return
      */
-    FastdfsFile getFileParts(Integer id);
+    FastdfsFile getFileParts(String id);
 
     /**
      * 添加文件记录
@@ -24,4 +24,10 @@ public interface FastdfsMapper {
      * @param fastdfsFile
      */
     void deleteFile(FastdfsFile fastdfsFile);
+
+    /**
+     * 生成主键，不采用id自增的原因：自增的主键存在主键值重复的情况
+     * @return
+     */
+    String createId();
 }

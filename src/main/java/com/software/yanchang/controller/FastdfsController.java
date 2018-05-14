@@ -6,7 +6,9 @@ import com.software.yanchang.service.StorageService;
 import com.software.yanchang.utils.FastdfsResults;
 import org.csource.common.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,4 +59,16 @@ public class FastdfsController {
     public void deleteFile(FastdfsFile fastdfsFile) throws IOException, MyException {
         storageService.deleteFile(fastdfsFile);
     }
+
+//    /**
+//     * 新增文件，测试用
+//     * @param fastdfsFile
+//     */
+//    @RequestMapping(value = "/addFile", method = {RequestMethod.GET, RequestMethod.POST})
+//    public void addFile(FastdfsFile fastdfsFile) {
+//        fastdfsFile.setId(fastdfsMapper.createId());
+//        System.out.println("fastdfsFile=" + fastdfsFile);
+//        fastdfsMapper.addFile(fastdfsFile);
+//        System.out.println("id=" + fastdfsFile.getId());
+//    }
 }

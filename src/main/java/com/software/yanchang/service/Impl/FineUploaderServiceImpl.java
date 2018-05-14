@@ -2,10 +2,7 @@ package com.software.yanchang.service.Impl;
 
 
 import com.software.yanchang.service.FineUploaderService;
-import com.software.yanchang.utils.FastdfsOperation;
-import com.software.yanchang.utils.FastdfsResults;
-import com.software.yanchang.utils.MultipartUploadParser;
-import com.software.yanchang.utils.RequestParser;
+import com.software.yanchang.utils.*;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -54,9 +51,9 @@ public class FineUploaderServiceImpl implements FineUploaderService {
     }
 
     public void handleDeleteFileRequest(String uuid, HttpServletResponse resp) throws IOException {
-        FileUtils.deleteDirectory(new File(UPLOAD_DIR, uuid));
+        FileUtils.deleteDirectory(new File(UPLOAD_DIR + uuid));
 
-        if (new File(UPLOAD_DIR, uuid).exists()) {
+        if (new File(UPLOAD_DIR + uuid).exists()) {
             log.warn("couldn't find or delete " + uuid);
         } else {
             log.info("deleted " + uuid);
@@ -68,7 +65,7 @@ public class FineUploaderServiceImpl implements FineUploaderService {
     public FastdfsResults uploadFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         RequestParser requestParser = null;
         String uri = "";
-        System.out.println("UPLOAD_DIR = " + UPLOAD_DIR );
+//        System.out.println("UPLOAD_DIR = " + UPLOAD_DIR );
         boolean isIframe = req.getHeader("X-Requested-With") == null || !req.getHeader("X-Requested-With").equals("XMLHttpRequest");
 
         try {
@@ -80,6 +77,7 @@ public class FineUploaderServiceImpl implements FineUploaderService {
 
                 uri = writeFileForMultipartRequest(requestParser);
 
+                System.out.println("uri=" + uri);
             } else {
                 requestParser = RequestParser.getInstance(req, null);
 
@@ -90,30 +88,31 @@ public class FineUploaderServiceImpl implements FineUploaderService {
                     handleDeleteFileRequest(uuid, resp);
                 } else {
                     writeFileForNonMultipartRequest(req, requestParser);
-                    writeResponse(resp.getWriter(), requestParser.generateError() ? "Generated error" : null, isIframe, false, requestParser);
+//                    writeResponse(resp.getWriter(), requestParser.generateError() ? "Generated error" : null, isIframe, false, requestParser);
                 }
             }
         } catch (Exception e) {
             log.error("Problem handling upload request", e);
             if (e instanceof MergePartsException) {
-                writeResponse(resp.getWriter(), e.getMessage(), isIframe, true, requestParser);
+//                writeResponse(resp.getWriter(), e.getMessage(), isIframe, true, requestParser);
             } else {
-                writeResponse(resp.getWriter(), e.getMessage(), isIframe, false, requestParser);
+//                writeResponse(resp.getWriter(), e.getMessage(), isIframe, false, requestParser);
             }
         }
         return new FastdfsResults(true,requestParser.getOriginalFilename(), uri);
     }
 
     public void writeFileForNonMultipartRequest(HttpServletRequest req, RequestParser requestParser) throws Exception {
-        File dir = new File(UPLOAD_DIR, requestParser.getUuid());
+        File dir = new File(UPLOAD_DIR + requestParser.getUuid());
         dir.mkdirs();
 
         String contentLengthHeader = req.getHeader(CONTENT_LENGTH);
         long expectedFileSize = Long.parseLong(contentLengthHeader);
 
         if (requestParser.getPartIndex() >= 0) {
-            writeFile(req.getInputStream(), new File(dir, requestParser.getUuid() + "_" + String.format("%05d", requestParser.getPartIndex())), null);
+            writeFile(req.getInputStream(), new File(dir,requestParser.getUuid() + "_" + String.format("%05d", requestParser.getPartIndex())), null);
 
+            System.out.println("requestParser.getPartIndex()=" + requestParser.getPartIndex());
             if (requestParser.getTotalParts() - 1 == requestParser.getPartIndex()) {
                 File[] parts = getPartitionFiles(dir, requestParser.getUuid());
                 File outputFile = new File(dir, requestParser.getFilename());
@@ -131,7 +130,7 @@ public class FineUploaderServiceImpl implements FineUploaderService {
 
 
     public String writeFileForMultipartRequest(RequestParser requestParser) throws Exception {
-        File dir = new File(UPLOAD_DIR, requestParser.getUuid());
+        File dir = new File(UPLOAD_DIR + requestParser.getUuid());
         dir.mkdirs();
         String uri = "";
 
@@ -144,9 +143,13 @@ public class FineUploaderServiceImpl implements FineUploaderService {
                 for (File part : parts) {
                     mergeFiles(outputFile, part);
                 }
-
+//                验证文件上传成功与否
                 assertCombinedFileIsVaid(requestParser.getTotalFileSize(), outputFile, requestParser.getUuid());
+//                删除上传目录中的所有碎片文件
                 deletePartitionFiles(dir, requestParser.getUuid());
+//                删除所有的临时文件，笔者加
+//                DirectoryOperation.deleteAllFileOperation(new File(TEMP_DIR));
+
                 uri =  fastdfsOperation.fastdfsUploadFile(UPLOAD_DIR, requestParser);
             }
         } else {

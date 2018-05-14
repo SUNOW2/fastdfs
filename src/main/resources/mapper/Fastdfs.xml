@@ -23,18 +23,22 @@
 		SELECT 
 		<include refid="fieldSql"/>
 		  FROM fastdfs_file f
-		 WHERE f.id = #{id,jdbcType = INTEGER}
+		 WHERE f.id = #{id,jdbcType = VARCHAR}
 	</select>
 
-	<!--新增文件记录-->
-	<insert id="addFile" parameterType="com.software.yanchang.domain.FastdfsFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	<!--新增文件记录 useGeneratedKeys="true" keyProperty="id" keyColumn="id" -->
+	<insert id="addFile" parameterType="com.software.yanchang.domain.FastdfsFile">
 		INSERT INTO fastdfs_file (
+		<if test="fileParts != null and fileParts != ''">
 			id
+		</if>
 		<if test="fileParts != null and fileParts != ''">
 			,file_parts
 		</if>
 		) VALUES (
-			#{id, jdbcType = INTEGER}
+		<if test="fileParts != null and fileParts != ''">
+			#{id, jdbcType = VARCHAR}
+		</if>
 		<if test="fileParts != null and fileParts != ''">
 			,#{fileParts, jdbcType = VARCHAR}
 		</if>
@@ -44,7 +48,12 @@
 	<!--删除文件记录-->
 	<delete id="deleteFile" parameterType="com.software.yanchang.domain.FastdfsFile">
 		DELETE FROM fastdfs_file
-		WHERE id = #{id, jdbcType = INTEGER}
+		WHERE id = #{id, jdbcType = VARCHAR}
 	</delete>
+
+	<!--创建文件主键-->
+	<select id="createId" resultType="java.lang.String">
+		SELECT concat('F',date_format(now(), '%y%m%d%i'), substring(MD5(RAND()),1,6)) from dual
+	</select>
 
 </mapper>

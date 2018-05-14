@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class FastdfsFile {
-    private Integer id;
+    private String id;
     private String fileParts;
 }

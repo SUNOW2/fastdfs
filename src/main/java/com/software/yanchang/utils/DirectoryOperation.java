@@ -21,6 +21,17 @@ public class DirectoryOperation {
         srcDirectory.delete();
     }
 
+    public static void deleteAllFileOperation(File srcDirectory) {
+        if(srcDirectory.isDirectory()) {
+            File[] files = srcDirectory.listFiles();
+//            递归删除目录下的子目录下的文件
+            for(int i = 0; i < files.length; i++) {
+                deleteDirectoryOperation(files[i]);
+            }
+        }
+    }
+
+
     /**
      * 删除文件
      * @param file
