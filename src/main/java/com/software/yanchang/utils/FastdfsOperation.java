@@ -89,8 +89,10 @@ public class FastdfsOperation {
             uri = uploadSmallFileUri + filePart[1].replace("[", "")
                     .replace("]", "").replace(" ", "")
                     .replace(",", "/") + "?attname=" + requestParser.getOriginalFilename();
+        } else {
+            uri = uploadBigFileUri + fastdfsFile.getId();
         }
-        uri = uploadBigFileUri + fastdfsFile.getId();
+
         // 上传成功，删除应用服务器文件
         DirectoryOperation.deleteDirectoryOperation(new File(uploadDir + "/" + requestParser.getUuid()));
         return uri;

@@ -19,7 +19,7 @@
 	</sql>
 
 	<!--根据id查询fileparts-->
-	<select id="getFileParts" parameterType="java.lang.Integer" resultMap="FastdfsFile">
+	<select id="getFileParts" parameterType="java.lang.String" resultMap="FastdfsFile">
 		SELECT 
 		<include refid="fieldSql"/>
 		  FROM fastdfs_file f
