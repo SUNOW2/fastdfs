@@ -1,19 +1,20 @@
 package com.software.yanchang.controller;
 
+import com.software.yanchang.dao.FastdfsMapper;
 import com.software.yanchang.domain.FastdfsFile;
 import com.software.yanchang.service.FineUploaderService;
 import com.software.yanchang.service.StorageService;
 import com.software.yanchang.utils.FastdfsResults;
+import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/fastdfs")
 public class FastdfsController {
@@ -23,6 +24,9 @@ public class FastdfsController {
 
     @Autowired
     private FineUploaderService fineUploaderService;
+
+    @Autowired
+    private FastdfsMapper fastdfsMapper;
 
     /**
      * 将文件服务器上的文件下载到应用服务器上
@@ -60,15 +64,16 @@ public class FastdfsController {
         storageService.deleteFile(fastdfsFile);
     }
 
-//    /**
-//     * 新增文件，测试用
-//     * @param fastdfsFile
-//     */
-//    @RequestMapping(value = "/addFile", method = {RequestMethod.GET, RequestMethod.POST})
-//    public void addFile(FastdfsFile fastdfsFile) {
-//        fastdfsFile.setId(fastdfsMapper.createId());
-//        System.out.println("fastdfsFile=" + fastdfsFile);
+    /**
+     * 新增文件，测试用
+     * @param fastdfsFile
+     */
+    @RequestMapping(value = "/addFile", method = {RequestMethod.GET, RequestMethod.POST})
+    public void addFile(FastdfsFile fastdfsFile) {
+        fastdfsFile.setId(fastdfsMapper.createId());
+        log.trace("日志输出 trace");
+        log.debug("日志输出 debug");
+        log.info("日志输出 info");
 //        fastdfsMapper.addFile(fastdfsFile);
-//        System.out.println("id=" + fastdfsFile.getId());
-//    }
+    }
 }
