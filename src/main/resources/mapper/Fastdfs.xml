@@ -4,16 +4,18 @@
 	<resultMap id="FastdfsFile" type="com.software.yanchang.domain.FastdfsFile">
 		<result column="id" property="id" jdbcType="VARCHAR" />
 		<result column="file_parts" property="fileParts" jdbcType="VARCHAR" />
+        <result column="fastdfs_date" property="fastdfsDate" jdbcType="TIMESTAMP"/>
 	</resultMap>
 
 	<sql id="fieldSql">
 		 f.id
 		,f.file_parts
+		,f.fastdfs_date
 	</sql>
 
 	<sql id="whereSql">
 		<if test="id != null and id != ''">
-			f.id = #{id,jdbcType = VARCHAR}
+			f.id = #{id, jdbcType = VARCHAR}
 		</if>
 
 	</sql>
@@ -23,7 +25,7 @@
 		SELECT 
 		<include refid="fieldSql"/>
 		  FROM fastdfs_file f
-		 WHERE f.id = #{id,jdbcType = VARCHAR}
+		 WHERE f.id = #{id, jdbcType = VARCHAR}
 	</select>
 
 	<!--新增文件记录 useGeneratedKeys="true" keyProperty="id" keyColumn="id" -->
@@ -35,6 +37,9 @@
 		<if test="fileParts != null and fileParts != ''">
 			,file_parts
 		</if>
+        <if test="fastdfsDate != null">
+            ,fastdfs_date
+        </if>
 		) VALUES (
 		<if test="id != null and id != ''">
 			#{id, jdbcType = VARCHAR}
@@ -42,6 +47,9 @@
 		<if test="fileParts != null and fileParts != ''">
 			,#{fileParts, jdbcType = VARCHAR}
 		</if>
+        <if test="fastdfsDate != null">
+            ,#{fastdfsDate, jdbcType = TIMESTAMP}
+        </if>
 		)
 	</insert>
 

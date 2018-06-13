@@ -4,7 +4,6 @@ import com.software.yanchang.domain.FastdfsFile;
 import com.software.yanchang.service.FineUploaderService;
 import com.software.yanchang.service.StorageService;
 import com.software.yanchang.utils.FastdfsResults;
-import com.software.yanchang.utils.ResponseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.csource.common.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,18 +76,19 @@ public class FastdfsController {
 //    @RequestMapping(value = "/addFile", method = {RequestMethod.GET, RequestMethod.POST})
 //    public void addFile(FastdfsFile fastdfsFile) {
 //        fastdfsFile.setId(fastdfsMapper.createId());
+//        fastdfsFile.setFastdfsDate(new Date());
 //        log.trace("日志输出 trace");
 //        log.debug("日志输出 debug");
 //        log.info("日志输出 info");
 //        fastdfsMapper.addFile(fastdfsFile);
 //    }
 
-    @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<FastdfsFile> test()  {
-        FastdfsFile fastdfsFile = new FastdfsFile();
-        fastdfsFile.setId("test");
-        fastdfsFile.setFileParts("112233445566");
-        log.info("path=" + path);
-        return new ResponseEntity("ok", 200, "成功", fastdfsFile);
-    }
+//    @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.POST})
+//    public ResponseEntity<FastdfsFile> test()  {
+//        FastdfsFile fastdfsFile = new FastdfsFile();
+//        fastdfsFile.setId("test");
+//        fastdfsFile.setFileParts("112233445566");
+//        log.info("path=" + path);
+//        return new ResponseEntity("ok", 200, "成功", fastdfsFile);
+//    }
 }

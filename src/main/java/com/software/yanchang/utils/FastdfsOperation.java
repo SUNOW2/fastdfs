@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Date;
 
 import static com.software.yanchang.utils.FastdfsConstants.SUCCESS;
 
@@ -19,9 +20,6 @@ public class FastdfsOperation {
 
     @Autowired
     private FastdfsMapper fastdfsMapper;
-
-    @Autowired
-    private FastdfsFile fastdfsFile;
 
     @Value("${fastdfs.uploadSmallFileUri}")
     private String uploadSmallFileUri;
@@ -80,8 +78,10 @@ public class FastdfsOperation {
         }
 
         //  新增数据库文件记录
+        FastdfsFile fastdfsFile = new FastdfsFile();
         fastdfsFile.setFileParts(fileParts);
         fastdfsFile.setId(fastdfsMapper.createId());
+        fastdfsFile.setFastdfsDate(new Date());
         fastdfsMapper.addFile(fastdfsFile);
         String[] filePart = fileParts.split(";");
 
