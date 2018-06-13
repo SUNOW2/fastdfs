@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.software.yanchang.dao.FastdfsMapper">
 	<resultMap id="FastdfsFile" type="com.software.yanchang.domain.FastdfsFile">
-		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="id" property="id" jdbcType="VARCHAR" />
 		<result column="file_parts" property="fileParts" jdbcType="VARCHAR" />
 	</resultMap>
 
@@ -13,7 +13,7 @@
 
 	<sql id="whereSql">
 		<if test="id != null and id != ''">
-			f.id = #{id,jdbcType = INTEGER}
+			f.id = #{id,jdbcType = VARCHAR}
 		</if>
 
 	</sql>
@@ -29,14 +29,14 @@
 	<!--新增文件记录 useGeneratedKeys="true" keyProperty="id" keyColumn="id" -->
 	<insert id="addFile" parameterType="com.software.yanchang.domain.FastdfsFile">
 		INSERT INTO fastdfs_file (
-		<if test="fileParts != null and fileParts != ''">
+		<if test="id != null and id != ''">
 			id
 		</if>
 		<if test="fileParts != null and fileParts != ''">
 			,file_parts
 		</if>
 		) VALUES (
-		<if test="fileParts != null and fileParts != ''">
+		<if test="id != null and id != ''">
 			#{id, jdbcType = VARCHAR}
 		</if>
 		<if test="fileParts != null and fileParts != ''">
