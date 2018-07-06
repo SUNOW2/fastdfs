@@ -26,7 +26,11 @@ public class DirectoryOperation {
             File[] files = srcDirectory.listFiles();
 //            递归删除目录下的子目录下的文件
             for(int i = 0; i < files.length; i++) {
-                deleteDirectoryOperation(files[i]);
+                long middleTime = System.currentTimeMillis() - files[i].lastModified();
+                long interval = 1000 * 60 * 60 * 24;
+                if(middleTime/interval > 2) {
+                    deleteDirectoryOperation(files[i]);
+                }
             }
         }
     }

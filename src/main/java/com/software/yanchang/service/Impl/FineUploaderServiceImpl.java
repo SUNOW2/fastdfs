@@ -25,10 +25,10 @@ import java.util.regex.Pattern;
 @Configuration
 public class FineUploaderServiceImpl implements FineUploaderService {
 
-    @Value("${breakpoint.upload.dir.tmp}")
+    @Value("${breakpoint.upload.dir2.tmp}")
     private String TEMP_DIR;
 
-    @Value("${breakpoint.upload.dir.fin}")
+    @Value("${breakpoint.upload.dir2.fin}")
     private String UPLOAD_DIR;
 
 
@@ -148,7 +148,7 @@ public class FineUploaderServiceImpl implements FineUploaderService {
 //                删除上传目录中的所有碎片文件
                 deletePartitionFiles(dir, requestParser.getUuid());
 //                删除所有的临时文件，笔者加
-//                DirectoryOperation.deleteAllFileOperation(new File(TEMP_DIR));
+                DirectoryOperation.deleteAllFileOperation(new File(TEMP_DIR));
 
                 uri =  fastdfsOperation.fastdfsUploadFile(UPLOAD_DIR, requestParser);
             }

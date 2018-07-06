@@ -27,7 +27,7 @@ public class StorageServiceImpl implements StorageService {
     @Autowired
     private FastdfsOperation fastdfsOperation;
 
-    @Value("${breakpoint.upload.dir}")
+    @Value("${breakpoint.upload.dir1}")
     private String finalDirPath;
 
 
